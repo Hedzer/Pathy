@@ -1,0 +1,14 @@
+<style>
+	.container{
+		padding-top:20px;
+	}
+</style>
+<div class="container">
+
+</div>
+<script>
+	(function($arguments){
+		$(".container").html("<h1>Watching "+`${$arguments}`+"</h1>");
+		App.Watching.watch(Config.ApplicationPath.value+$arguments);
+	})($arguments);
+</script>

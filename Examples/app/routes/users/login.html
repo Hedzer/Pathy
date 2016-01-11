@@ -1,0 +1,41 @@
+<style>
+	.container{
+		padding-top:20px;
+	}
+</style>
+<div class="container">
+	<div id="body" class="row">
+	</div>
+</div>
+<script>
+	(function($arguments){
+		
+		if (Config.ApplicationPath && Config.ApplicationPath.value){
+			var fs = require('fs');
+			path = require("path");
+			fs.readdir(Config.ApplicationPath.value, function (err,files) {
+				if (err){
+					console.log(err);
+				}
+				var projects = "";
+				files.filter(function (files) {
+					return fs.statSync(path.join(Config.ApplicationPath.value, files)).isDirectory();
+				}).forEach(function (folder) {
+					projects+=
+						`<a href=${"\"#/project/load+"+folder+"\""}>
+						  <div class="col-sm-4 col-md-4">
+						    <div class="thumbnail">
+						      <img src=${"\"../"+Config.ApplicationPath.value+folder+"/icon.png\""} alt="">
+						      <div class="caption">
+						        <h3>${folder}</h3>
+						      </div>
+						    </div>
+						  </div>
+						  </a>
+						`
+				});
+				$("#body").html(projects);
+			});
+		}
+	})($arguments);
+</script>
