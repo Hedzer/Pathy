@@ -3,12 +3,16 @@
 		padding-top:20px;
 	}
 </style>
-<div class="container">
+<div id="container">
 
 </div>
 <script>
 	(function($arguments){
-		$(".container").html("<h1>Watching "+`${$arguments}`+"</h1>");
-		App.Watching.watch(Config.ApplicationPath.value+$arguments);
+		var container = document.getElementById("container");
+		if (!$arguments || !$arguments.name){
+			container.innerHTML = `<h1>No user, or user with no name given.</h1>`;
+			return;
+		}
+		container.innerHTML = `<h1>Loaded user: ${$arguments.name}</h1>`;
 	})($arguments);
 </script>
