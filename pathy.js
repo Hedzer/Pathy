@@ -70,7 +70,7 @@ var Pathy = (function(window){
 	var Pathy = {
 		liveReload:true,
 		routes:"./app/routes/",
-		container:"#application-body",
+		container:"body",
 		navigate:function(url, args, noCheck){
 			clearInterval(watch);
 			if (!noCheck){
