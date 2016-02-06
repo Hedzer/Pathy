@@ -52,6 +52,7 @@ var Pathy = (function(window){
 				var $arguments = args;
 				//var code = (script.src ? script.src : script.innerText);
 				var code = script.innerText;
+				//add state maybe?
 				window.eval.call(window,"(function($arguments){"+code+" })" + '//# sourceURL='+url)($arguments);
 			});
 		}
