@@ -30,7 +30,8 @@
 			users.forEach(function(user){
 				Greetings.innerHTML+=`<a href='#users/load+${JSON.stringify(user)}'><h2>Load ${user.name}</h2></a>`
 			});
-			return;
 		}
+		Pathy.alias("includes/footer", "home/footer");
+		Pathy.include("home/footer");
 	})($arguments);
 </script>
