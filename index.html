@@ -32,15 +32,15 @@
     <div id="main_content_wrap" class="outer">
       <section id="main_content" class="inner">
         <h3>
-<a id="pathy" class="anchor" href="#pathy" aria-hidden="true"><span class="octicon octicon-link"></span></a>Pathy</h3>
+<a id="pathy" class="anchor" href="#pathy" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Pathy</h3>
 
 <p>     A simple routing tool for Node-Webkit (<a href="http://nwjs.io">http://nwjs.io</a>) that allows folders and html files to act like URLs and CGI scripts.</p>
 
 <h3>
-<a id="usage" class="anchor" href="#usage" aria-hidden="true"><span class="octicon octicon-link"></span></a>Usage</h3>
+<a id="usage" class="anchor" href="#usage" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Usage</h3>
 
 <h4>
-<a id="dom-setup" class="anchor" href="#dom-setup" aria-hidden="true"><span class="octicon octicon-link"></span></a>DOM Setup</h4>
+<a id="dom-setup" class="anchor" href="#dom-setup" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>DOM Setup</h4>
 
 <p>Include the JavaScript file in your index HTML.</p>
 
@@ -55,7 +55,7 @@
 <p>Pathy will inject pages into the <code>body</code> tag by default. This can be changed by <code>Pathy.container = '#id, or tag, or .class, etc.'</code>.</p>
 
 <h4>
-<a id="naviagtion" class="anchor" href="#naviagtion" aria-hidden="true"><span class="octicon octicon-link"></span></a>Naviagtion</h4>
+<a id="naviagtion" class="anchor" href="#naviagtion" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Naviagtion</h4>
 
 <div class="highlight highlight-source-js"><pre>    <span class="pl-smi">window</span>.<span class="pl-c1">location</span>.<span class="pl-c1">hash</span> <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">"</span>users/load<span class="pl-pds">"</span></span>;
     <span class="pl-c">//or</span>
@@ -66,7 +66,7 @@
 <p>It's important to note that there's no need to include the ".html" file extension in the path.</p>
 
 <h4>
-<a id="naviagtion--arguments" class="anchor" href="#naviagtion--arguments" aria-hidden="true"><span class="octicon octicon-link"></span></a>Naviagtion + Arguments</h4>
+<a id="naviagtion--arguments" class="anchor" href="#naviagtion--arguments" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Naviagtion + Arguments</h4>
 
 <div class="highlight highlight-source-js"><pre>    <span class="pl-k">var</span> args <span class="pl-k">=</span> {id<span class="pl-k">:</span><span class="pl-c1">12345</span>};
     <span class="pl-smi">window</span>.<span class="pl-c1">location</span>.<span class="pl-c1">hash</span> <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">"</span>users/load+<span class="pl-pds">"</span></span><span class="pl-k">+</span><span class="pl-smi">JSON</span>.<span class="pl-en">stringify</span>(args);
@@ -76,7 +76,7 @@
 <p>The code above send the argument <code>{id:12345}</code> to the page <code>./app/routes/users/load.html</code>.  The code below shows the contents of the page, as well as how to recieve the argument.</p>
 
 <h4>
-<a id="recieving-arguments" class="anchor" href="#recieving-arguments" aria-hidden="true"><span class="octicon octicon-link"></span></a>Recieving Arguments</h4>
+<a id="recieving-arguments" class="anchor" href="#recieving-arguments" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Recieving Arguments</h4>
 
 <p>The following are the contents of the <code>./app/routes/users/load.html</code> file.</p>
 
@@ -102,7 +102,24 @@
 <p>The contents of <code>./app/routes/users/load.html</code> were processed and added into the contents of the <code>index.html</code> from the DOM Setup example. If another path is called, the Pathy container (<code>body</code>) will be cleared and replaced with the processed contents of the new path.</p>
 
 <h4>
-<a id="changing-settings" class="anchor" href="#changing-settings" aria-hidden="true"><span class="octicon octicon-link"></span></a>Changing Settings</h4>
+<a id="includes" class="anchor" href="#includes" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Includes</h4>
+
+<p>Pathy can include other HTML files into the current one.  Including appends the contents of the included file and runs all its included scripts.  As far as receiving arguments are concerned, there's no difference between navigation and inclusion. Here's how to include:</p>
+
+<div class="highlight highlight-source-js"><pre>    <span class="pl-smi">Pathy</span>.<span class="pl-en">include</span>(<span class="pl-s"><span class="pl-pds">"</span>includes/footer<span class="pl-pds">"</span></span>, args);</pre></div>
+
+<h4>
+<a id="alias-and-unalias" class="anchor" href="#alias-and-unalias" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Alias And Unalias</h4>
+
+<p>Aliasing allows a route to point to another without being redirected. </p>
+
+<div class="highlight highlight-source-js"><pre>    <span class="pl-smi">Pathy</span>.<span class="pl-en">alias</span>(<span class="pl-s"><span class="pl-pds">"</span>users/load<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>admin/loadUser<span class="pl-pds">"</span></span>);
+    <span class="pl-smi">window</span>.<span class="pl-c1">location</span>.<span class="pl-c1">hash</span> <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">"</span>admin/loadUser<span class="pl-pds">"</span></span>;</pre></div>
+
+<p>The <code>admin/loadUser</code> path doesn't really exist, but now it points to <code>users/load</code>.  This is handy when you want to change access or prevent creating duplicate files. When an alias is ready to be removed, simply call <code>Pathy.unalias("alias/path");</code>. Following the example above, one would call <code>Pathy.unalias("admin/loadUser")</code>. After removing an alias, attempting to call it will produce an error if no route with that path exists.</p>
+
+<h4>
+<a id="changing-settings" class="anchor" href="#changing-settings" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Changing Settings</h4>
 
 <p>To change the default route path:
 Set <code>Pathy.routes = './somewhere/anywhere/'</code>
@@ -113,7 +130,7 @@ Set <code>Pathy.container = '#id, or tag, or .class, etc.'</code>
 The default container is <code>body</code>. </p>
 
 <h4>
-<a id="live-reload" class="anchor" href="#live-reload" aria-hidden="true"><span class="octicon octicon-link"></span></a>Live Reload</h4>
+<a id="live-reload" class="anchor" href="#live-reload" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Live Reload</h4>
 
 <p>Pathy has a live reload feature! Yay! If you've navigated to a page and it is modified, it will automatically reload without disrupting your JavaScript state.
 This feature can be turned on and off by: <code>Pathy.liveReload = true/false</code>.</p>
