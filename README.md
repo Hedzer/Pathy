@@ -59,6 +59,20 @@ Once navigation has occurred and all scripts have been run, the following would 
 ```
 The contents of `./app/routes/users/load.html` were processed and added into the contents of the `index.html` from the DOM Setup example. If another path is called, the Pathy container (`body`) will be cleared and replaced with the processed contents of the new path.
 
+#### Includes
+Pathy can include other HTML files into the current one.  Including appends the contents of the included file and runs all its included scripts.  As far as receiving arguments are concerned, there's no difference between navigation and inclusion. Here's how to include:
+```javascript
+	Pathy.include("includes/footer", args);
+```
+
+#### Alias And Unalias
+Aliasing allows a route to point to another without being redirected. 
+```javascript
+	Pathy.alias("users/load", "admin/loadUser");
+	window.location.hash = "admin/loadUser";
+```
+The `admin/loadUser` path doesn't really exist, but now it points to `users/load`.  This is handy when you want to change access or prevent creating duplicate files. When an alias is ready to be removed, simply call `Pathy.unalias("alias/path");`. Following the example above, one would call `Pathy.unalias("admin/loadUser")`. After removing an alias, attempting to call it will produce an error if no route with that path exists.
+
 #### Changing Settings
 To change the default route path:
 Set `Pathy.routes = './somewhere/anywhere/'`
