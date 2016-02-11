@@ -63,6 +63,7 @@ var Pathy = (function(window){
 	}
 	function monitor(url, args){
 		var file = Pathy.routes+url+".html";
+		clearInterval(watch);
 		watch = setInterval(function(){
 			fs.stat(file, function(err, data){
 				if (data.mtime+"" != lastStamp+""){
@@ -112,7 +113,6 @@ var Pathy = (function(window){
 		},
 		include:function(url, args){
 			var file = getLocation(url);
-			console.log(file);
 			fs.readFile(file, 'utf8', function (err,data) {
 				if (err) {
 					return console.log(err);
