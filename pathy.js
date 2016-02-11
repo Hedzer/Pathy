@@ -2,6 +2,7 @@ var Pathy = (function(window){
 	var fs = require('fs');
 	var watch = false;
 	var lastStamp = false;
+	var lastPath = false;
 	var readyInterval = setInterval(function() {
 		var state = document.readyState;
 		if (state === "complete" || state === "loaded") {
@@ -94,10 +95,23 @@ var Pathy = (function(window){
 			clearInterval(watch);
 			if (!noCheck){
 				var expected = "#"+url+"+"+(typeof args == "string" ? args : JSON.stringify(args));
+				var isAnalogousExpected = (expected === "#"+url+"+undefined");
 				if (window.location.hash != expected){
-					window.location.hash = expected;
+					window.location.hash = (isAnalogousExpected ? "#"+url : expected);
+					if (Pathy.liveReload){
+						if (!watch){
+							return;
+						}
+					} else {
+						return;
+					}
 				}
 			}
+			var path = window.location.hash;
+			if (lastPath === path && !Pathy.liveReload){
+				return;
+			}
+			lastPath = path;
 			var file = getLocation(url);
 			fs.readFile(file, 'utf8', function (err,data) {
 				if (err) {
