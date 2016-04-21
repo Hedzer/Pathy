@@ -11,6 +11,9 @@ var Pathy = (function(window){
 				navigate();
 			}
 			window.onhashchange = function () {
+				if (!((window.location.href || "").trim()) || !((window.location.hash || "").trim())){
+					return;
+				}
 				navigate();
 			};
 		}
@@ -92,6 +95,7 @@ var Pathy = (function(window){
 		routes:"./app/routes/",
 		container:"body",
 		navigate:function(url, args, noCheck){
+			if (!url){return;}
 			clearInterval(watch);
 			if (!noCheck){
 				var expected = "#"+url+"+"+(typeof args == "string" ? args : JSON.stringify(args));
