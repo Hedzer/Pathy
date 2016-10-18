@@ -94,41 +94,48 @@ var Pathy = (function(window){
 		liveReload:true,
 		routes:"./app/routes/",
 		container:"body",
-		navigate:function(url, args, noCheck){
-			if (!url){return;}
-			clearInterval(watch);
-			if (!noCheck){
-				var expected = "#"+url+"+"+(typeof args == "string" ? args : JSON.stringify(args));
-				var isAnalogousExpected = (expected === "#"+url+"+undefined");
-				if (window.location.hash != expected){
-					window.location.hash = (isAnalogousExpected ? "#"+url : expected);
-					if (Pathy.liveReload){
-						if (!watch){
-							return;
+		navigate: (function() {
+			var timer;
+			return function(url, args, noCheck){
+				clearTimeout(timer);
+				timer = setTimeout(function() {
+					if (!url){return;}
+					clearInterval(watch);
+					if (!noCheck){
+						var expected = "#"+url+"+"+(typeof args == "string" ? args : JSON.stringify(args));
+						var isAnalogousExpected = (expected === "#"+url+"+undefined");
+						if (window.location.hash != expected){
+							window.location.hash = (isAnalogousExpected ? "#"+url : expected);
+							if (Pathy.liveReload){
+								if (!watch){
+									return;
+								}
+							} else {
+								return;
+							}
 						}
-					} else {
+					}
+					var path = window.location.hash;
+					if (lastPath === path && !Pathy.liveReload){
 						return;
 					}
-				}
+					lastPath = path;
+					var file = getLocation(url);
+					fs.readFile(file, 'utf8', function (err, data) {
+						if (err) {
+							return console.log(err);
+						}
+						stamp(file);
+						var container = select(Pathy.container);
+						container.innerHTML = data;
+						runScripts(url, args);
+						if (Pathy.liveReload){
+							monitor(url, args);
+						}
+					});
+				} , 10);
 			}
-			var path = window.location.hash;
-			if (lastPath === path && !Pathy.liveReload){
-				return;
-			}
-			lastPath = path;
-			var file = getLocation(url);
-			fs.readFile(file, 'utf8', function (err,data) {
-				if (err) {
-					return console.log(err);
-				}
-				stamp(file);
-				select(Pathy.container).innerHTML = data;
-				runScripts(url, args);
-				if (Pathy.liveReload){
-					monitor(url, args);
-				}
-			});
-		},
+		})(),
 		include:function(url, args){
 			var file = getLocation(url);
 			fs.readFile(file, 'utf8', function (err,data) {
